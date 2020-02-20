@@ -1,0 +1,436 @@
+import javax.swing.*; 
+import java.awt.event.*;
+import java.awt.*;
+
+import javax.imageio.*;
+import java.io.*;
+public class Main {
+
+	static JTextField enter_command;
+	static JButton enter_button;
+	static JFrame start_frame;
+	static JButton Back;
+	static JButton Draw;
+	public static void mainmenu() {
+		JLabel instruction;
+		JLabel key;
+		JLabel key_square;
+		JLabel key_triangle;
+		JLabel key_rectangle;
+		JLabel key_quit;
+
+		start_frame =new JFrame("Draw Shape");
+
+		start_frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});       	
+
+
+		enter_command = new JTextField();
+		enter_command.setBounds(20,40,150,20);
+		start_frame.add(enter_command); 
+
+		enter_button = new JButton("Enter");
+		enter_button.setBounds(175,40,70,20);
+		start_frame.add(enter_button);
+		//		jb.addActionListener((ActionListener) this);
+
+		instruction = new JLabel("Enter A Command");
+		instruction.setBounds(20,20,200,200);
+		instruction.setSize(400,10);
+		start_frame.add(instruction);
+
+		key = new JLabel("Key:");
+		key.setBounds(300,10,100,100);
+		key.setSize(400,20);
+		key.setLayout(null);
+		key.setVisible(true);
+		start_frame.add(key);
+
+		key_square = new JLabel("S = Square");
+		key_square.setBounds(300,10,100,100);
+		key_square.setSize(400,50);
+		key_square.setLayout(null);
+		key_square.setVisible(true);
+		start_frame.add(key_square);
+
+		key_triangle = new JLabel("T = Triangle");
+		key_triangle.setBounds(300,10,100,100);
+		key_triangle.setSize(400,80);
+		key_triangle.setLayout(null);
+		key_triangle.setVisible(true);
+		start_frame.add(key_triangle);
+
+		key_rectangle = new JLabel("R = Rectangle");
+		key_rectangle.setBounds(300,10,100,100);
+		key_rectangle.setSize(400,110);
+		key_rectangle.setLayout(null);
+		key_rectangle.setVisible(true);
+		start_frame.add(key_rectangle);
+
+		key_quit = new JLabel("Q = Quit");
+		key_quit.setBounds(300,10,100,100);
+		key_quit.setSize(400,140);
+		key_quit.setLayout(null);
+		key_quit.setVisible(true);
+		start_frame.add(key_quit);
+
+		start_frame.setSize(400,400);
+		start_frame.setLayout(null);
+		start_frame.setVisible(true);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 600, 600);
+		panel.setBackground(Color.CYAN);
+		start_frame.add(panel);
+
+		start_frame.setLocationRelativeTo(null);
+
+		enter();
+	}
+
+	
+	public static void enter() {
+
+		enter_button.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){  
+				switch (enter_command.getText())
+				{
+				case "S": case "s": 
+					start_frame.setVisible(false);
+					SquareGUI();
+					break;
+				case "T": case "t":
+					start_frame.setVisible(false);
+				    TriangleGUI();
+					break;     	
+				case "R": case "r": 
+					start_frame.setVisible(false);
+					RectangleGUI();
+					break;    
+				default: JOptionPane.showMessageDialog(start_frame,"Invalid Command has been entered, re-enter command");
+				break;
+				}
+			}
+	
+		});  
+	}
+	
+	static JTextField enter_length;
+	static JFrame sqr;
+	
+	
+		public static void SquareGUI() {
+			JLabel length_label;
+			JLabel key_requirement;
+			JLabel req1;
+			JLabel req2;
+
+			sqr = new JFrame("Draw Square");
+
+			enter_length = new JTextField();
+			enter_length.setBounds(70,30,150,20);
+			sqr.add(enter_length); 
+
+			length_label = new JLabel("Length");
+			length_label.setBounds(20,30,150,100); length_label.setSize(400,20);
+			sqr.add(length_label);
+
+			key_requirement = new JLabel("Length Requirements");
+			key_requirement.setBounds(20,60,150,100);
+			sqr.add(key_requirement); 
+
+			req1 = new JLabel("Length must be a positive integer");
+			req1.setBounds(20,115,300,20);
+			sqr.add(req1); 
+
+			req2 = new JLabel("Length must be between 15-85 cm");
+			req2.setBounds(20,130,300,20);
+			sqr.add(req2); 
+
+			Draw = new JButton("Draw");
+			Draw.setBounds(150,300,70,40);
+			sqr.add(Draw);
+
+			Back = new JButton("Back");
+			Back.setBounds(300,20,70,20);
+			sqr.add(Back);
+			sqr.setSize(400,400);
+			sqr.setLayout(null);
+			sqr.setVisible(true);
+
+			JPanel panel = new JPanel();
+			panel.setBounds(0, 0, 400, 400);
+			panel.setBackground(Color.YELLOW);
+			sqr.add(panel);
+
+			sqr.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}});
+			enterSquare();
+			backSquare();
+		}
+
+
+
+		public static void backSquare() {
+			Back.addActionListener(new ActionListener(){  
+				public void actionPerformed(ActionEvent e){ 
+
+					sqr.setVisible(false);
+					mainmenu();
+
+				}  
+			}); 
+		}
+		
+		public static void enterSquare() {
+			Draw.addActionListener(new ActionListener(){  
+				public void actionPerformed(ActionEvent e){
+					try {
+						String command = enter_length.getText();
+						Integer	x = Integer.valueOf(command);
+						if(x >= 15 && x <= 85)
+//							DrawingSquare();
+						else if(x <= 0)
+							JOptionPane.showMessageDialog(Draw,"Integer is negative, re-enter command");
+						else if((x>0 && x< 15) || x>85)
+							JOptionPane.showMessageDialog(Draw,"Integer is out of range, re-enter command");
+					}
+					catch (Exception e1) {
+						JOptionPane.showMessageDialog(Draw,"Length must be a valid integer, re-enter command");
+					}
+				}
+			});  
+		}
+	
+		
+		static JFrame trg;
+		static JTextField enter_length_a;
+		static JTextField enter_length_b;
+		static JTextField enter_length_c;
+		
+		public static void TriangleGUI() {
+			JLabel length_a;
+			JLabel length_b;
+			JLabel length_c;
+			JLabel key_req;
+			JLabel req1;
+			JLabel req2;
+
+
+			trg = new JFrame();
+
+			enter_length_a = new JTextField();
+			enter_length_a.setBounds(75,30,150,20);
+			trg.add(enter_length_a); 
+
+			length_a = new JLabel("Length a");
+			length_a.setBounds(20,30,150,100); length_a.setSize(400,20);
+			trg.add(length_a);
+
+			enter_length_b = new JTextField();
+			enter_length_b.setBounds(75,60,150,20);
+			trg.add(enter_length_b); 
+
+			length_b = new JLabel("Length b");
+			length_b.setBounds(20,60,150,100); length_b.setSize(400,20);
+			trg.add(length_b);
+
+			enter_length_c = new JTextField();
+			enter_length_c.setBounds(75,90,150,20);
+			trg.add(enter_length_c); 
+
+			length_c = new JLabel("Length c");
+			length_c.setBounds(20,90,150,100); length_c.setSize(400,20);
+			trg.add(length_c);
+
+			key_req = new JLabel("Length Requirements:");
+			key_req.setBounds(20,120,150,20);
+			trg.add(key_req); 
+
+			req1 = new JLabel("Lengths must positive integers");
+			req1.setBounds(20,135,300,20);
+			trg.add(req1); 
+
+			req2 = new JLabel("Lengths must be between 15-85 cms");
+			req2.setBounds(20,150,300,20);
+			trg.add(req2); 
+
+			Draw = new JButton("Draw");
+			Draw.setBounds(150,300,70,40);
+			trg.add(Draw);
+
+			Back = new JButton("Back");
+			Back.setBounds(300,20,70,20);
+			trg.add(Back);
+
+			trg.setSize(400,400);
+			trg.setLayout(null);
+			trg.setVisible(true);
+
+			JPanel panel = new JPanel();
+			panel.setBounds(0, 0, 400, 400);
+			panel.setBackground(Color.YELLOW);
+			trg.add(panel);
+
+			trg.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}});
+	backTriangle();
+	enterTriangle();
+		}
+
+		public static void backTriangle() {
+			Back.addActionListener(new ActionListener(){  
+				public void actionPerformed(ActionEvent e){ 
+
+					trg.setVisible(false);
+				    mainmenu();
+				}  
+			});  
+
+		}
+		
+		public static void enterTriangle() {
+			Draw.addActionListener(new ActionListener(){  
+				public void actionPerformed(ActionEvent e){
+					try {
+						String l1 = enter_length_a.getText();
+						String l2 = enter_length_b.getText();
+						String l3 = enter_length_c.getText();
+						Integer a = Integer.valueOf(l1);
+						Integer b = Integer.valueOf(l2);
+						Integer c = Integer.valueOf(l3);
+						if((a >= 15 && a <= 85) && (b >= 15 && b <= 85) && (c >= 15 && c <= 85))
+							JOptionPane.showMessageDialog(Draw,"fukc uh");
+						else if((a <= 0)|| (b <= 0)||(c <= 0))
+							JOptionPane.showMessageDialog(Draw,"One or more integers are negative, re-enter command");
+						else if(((a>0 && a< 15) || a>85) ||((b>0 && b< 15) || (b>85)) ||((c>0 && c< 15) || (c>85))                     )
+							JOptionPane.showMessageDialog(Draw,"One or more integers are out of range, re-enter command");
+
+					}
+					catch (Exception e1) {
+						JOptionPane.showMessageDialog(Draw,"Lengths must be valid integers, re-enter command");
+					}
+				}
+			});  
+		}
+	
+		
+		static JFrame rct;
+		static JTextField enter_length_1;
+		static JTextField enter_length_2;
+		
+
+		public static void RectangleGUI() {
+			JLabel length_1;
+			JLabel length_2;
+			JLabel key_req;
+			JLabel req1;
+			JLabel req2;
+
+			rct = new JFrame();
+
+			enter_length_1 = new JTextField();
+			enter_length_1.setBounds(75,30,150,20);
+			rct.add(enter_length_1); 
+
+			length_1 = new JLabel("Length 1");
+			length_1.setBounds(20,30,150,100); length_1.setSize(400,20);
+			rct.add(length_1);
+
+			enter_length_2 = new JTextField();
+			enter_length_2.setBounds(75,60,150,20);
+			rct.add(enter_length_2); 
+
+			length_2 = new JLabel("Length 2");
+			length_2.setBounds(20,60,150,100); length_2.setSize(400,20);
+			rct.add(length_2);
+
+			key_req = new JLabel("Length Requirements:");
+			key_req.setBounds(20,90,150,20);
+			rct.add(key_req); 
+
+			req1 = new JLabel("Lengths must positive integers");
+			req1.setBounds(20,105,300,20);
+			rct.add(req1); 
+
+			req2 = new JLabel("Lengths must be between 15-85 cms");
+			req2.setBounds(20,120,300,20);
+			rct.add(req2); 
+
+			Back = new JButton("Back");
+			Back.setBounds(300,20,70,20);
+			rct.add(Back);
+
+			Draw = new JButton("Draw");
+			Draw.setBounds(150,300,70,40);
+			rct.add(Draw);
+
+			rct.setSize(400,400);
+			rct.setLayout(null);
+			rct.setVisible(true);
+
+			JPanel panel = new JPanel();
+			panel.setBounds(0, 0, 400, 400);
+			panel.setBackground(Color.YELLOW);
+			rct.add(panel);
+
+			rct.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}});
+			backRectangle();
+			enterRectangle();
+		}
+
+		
+		
+		public static void backRectangle() {
+			Back.addActionListener(new ActionListener(){  
+				public void actionPerformed(ActionEvent e){ 
+
+					rct.setVisible(false);
+					mainmenu();
+				}  
+			});  
+		}
+
+		public static void enterRectangle() {
+			Draw.addActionListener(new ActionListener(){  
+				public void actionPerformed(ActionEvent e){
+					try {
+						String l1 = enter_length_1.getText();
+						String l2 = enter_length_2.getText();
+						Integer len1 = Integer.valueOf(l1);
+						Integer len2 = Integer.valueOf(l2);
+
+						if((len1 >= 15 && len1 <= 85) && (len2 >= 15 && len2 <= 85))
+							JOptionPane.showMessageDialog(Draw,"fukc uh");
+						else if((len1 <= 0)|| (len2 <= 0))
+							JOptionPane.showMessageDialog(Draw,"One or more integers are negative, re-enter command");
+						else if(((len1>0 && len1< 15) || len1>85) || ((len2>0 && len2< 15) || (len2>85)))
+							JOptionPane.showMessageDialog(Draw,"One or more integers are out of range, re-enter command");
+
+					}
+					catch (Exception e1) {
+						JOptionPane.showMessageDialog(Draw,"Lengths must be valid integers, re-enter command");
+					}
+				}
+			});  
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
